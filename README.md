@@ -22,7 +22,9 @@ Following packages are used for running kinesis streams in local development env
  - reset_order_streams.sh: Deletes & Recreates the necessary Kinesis streams
  - order_generator.py: Generates fakes orders and inserts the event order_created
  - order_assignment.py: Assigns orders to drivers and inserts the event order_assigned
- - order_completed.py: Marks orders as completed
+ - order_completed.py: Marks orders as completed and inserts order_id in order_completed
+ - view_stream.py: To view the various order event stream
+ - metrics_top_regions.ipynb: Notebook to calcuate Top N regions based on number of orders created
  
  #### Installations and Setup
  
