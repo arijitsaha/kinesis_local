@@ -7,6 +7,8 @@ Kinesalite as part of Localstack used as local AWS Kinesis instance https://gith
 
 Faker python package used to generate fake order data https://github.com/joke2k/faker
 
+Boto 3 is the Amazon Web Services (AWS) SDK for Python https://boto3.readthedocs.io/en/latest/ 
+
 '''
 
 from __future__ import print_function

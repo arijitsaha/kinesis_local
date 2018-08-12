@@ -7,6 +7,8 @@ Kinesalite as part of Localstack used as local AWS Kinesis instance https://gith
 
 Faker python package used to generate fake order data https://github.com/joke2k/faker
 
+Boto 3 is the Amazon Web Services (AWS) SDK for Python https://boto3.readthedocs.io/en/latest/ 
+
 '''
 
 from __future__ import print_function
@@ -32,8 +34,8 @@ def OrderCreation(num_rec):
     '''
     # generate fake order dataset
     return [{'order_id': random.choice('ABCDEF')+ faker.numerify('-####-')+ random.choice('STU')+ faker.numerify('###'),  # random number eg:235-533
-            'ship_from_region': 'reg' + faker.numerify('#'),  # random region code
-            'ship_to_region': 'reg' + faker.numerify('#'),  # random region code
+            'ship_from_region': 'reg' + faker.numerify('##'),  # random region code
+            'ship_to_region': 'reg' + faker.numerify('##'),  # random region code
             'pickup_time' : str(datetime.now() + timedelta(minutes=random.randint(5,30)))[:-10], #random order time
             'price' : faker.numerify('###'), # random order value
             'created_ts': datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] #order generation timestamp
@@ -52,11 +54,12 @@ def InsertOrderinStream(stream_name, num_rec):
     :param num_rec: Number of fake order records 
 
     '''
+    # start counter
+    start = time.time()
+
     # end point url is critical for local testing
     kinesis_client = boto3.client('kinesis', endpoint_url='http://localhost:4568', region_name='us-east-1', aws_access_key_id='x',aws_secret_access_key='x')
     orders = OrderCreation(num_rec)
-    
-    start = time.time()
 
     # loop and insert individual record to stream instead of a blob of records
     for order_record in orders:
@@ -65,6 +68,7 @@ def InsertOrderinStream(stream_name, num_rec):
                         Data=json.dumps(order_record),
                         PartitionKey=order_record['ship_from_region'])
     
+    # stop counter
     end = time.time()
     # measure execution time
     time_taken = (end - start)
